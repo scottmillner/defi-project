@@ -38,7 +38,7 @@ import {
 } from "@solana/kit";
 import type { Address, Instruction } from "@solana/kit";
 
-import { getKaminoSigner, rpc } from "./wallet.js";
+import { getKaminoSigner, rpc } from "./wallet";
 import {
   KAMINO_MAIN_MARKET,
   KAMINO_LUT,
@@ -46,7 +46,7 @@ import {
   USDC_MINT_SOLANA,
   SOL_COLLATERAL_AMOUNT,
   USDC_BORROW_AMOUNT,
-} from "../config.js";
+} from "../config";
 
 // ---------------------------------------------------------------------------
 // Constants

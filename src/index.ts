@@ -6,7 +6,7 @@
  *   npx tsx src/index.ts close   # closePosition
  */
 
-import { openPosition, closePosition } from "./services/pipeline.js";
+import { openPosition, closePosition } from "./services/pipeline";
 
 const [, , command] = process.argv;
 

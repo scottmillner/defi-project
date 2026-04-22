@@ -30,14 +30,14 @@ import {
   USDC_CONTRACT_BASE,
   MAYAN_FORWARDER_CONTRACT_BASE,
   MAYAN_EXPLORER_API,
-} from "../config.js";
+} from "../config";
 
 import {
   v1Keypair,
   connection,
   signTransaction,
   getBaseWallet,
-} from "./wallet.js";
+} from "./wallet";
 
 // ---------------------------------------------------------------------------
 // Types

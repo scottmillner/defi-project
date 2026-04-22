@@ -18,14 +18,14 @@
 import {
   SOL_COLLATERAL_AMOUNT,
   USDC_BORROW_AMOUNT,
-} from "../config.js";
+} from "../config";
 
 // Kamino service uses @solana/kit v2 types internally; we call it here with
 // human-readable amounts and let the service convert to base units.
-import { deposit, borrow, repay, withdraw } from "./kamino.js";
+import { deposit, borrow, repay, withdraw } from "./kamino";
 
 // Mayan service uses @solana/web3.js v1 types internally.
-import { bridgeToBase, bridgeToSolana, waitForBridge } from "./mayan.js";
+import { bridgeToBase, bridgeToSolana, waitForBridge } from "./mayan";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types

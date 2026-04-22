@@ -1,6 +1,7 @@
-import { closePosition } from "@backend/services/pipeline.js";
+export const dynamic = "force-dynamic";
 
 export async function POST() {
+  const { closePosition } = await import("@backend/services/pipeline");
   try {
     const result = await closePosition();
     return Response.json(result);

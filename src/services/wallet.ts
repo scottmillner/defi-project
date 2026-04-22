@@ -36,7 +36,7 @@ import { fromLegacyKeypair } from "@solana/compat";
 // ── Ethers (Base) ──────────────────────────────────────────────────────────
 import { ethers } from "ethers";
 
-import { SOLANA_RPC_URL, BASE_RPC_URL } from "../config.js";
+import { SOLANA_RPC_URL, BASE_RPC_URL } from "../config";
 
 // ---------------------------------------------------------------------------
 // Build the raw v1 Keypair from the SOLANA_PRIVATE_KEY env var (base58)
