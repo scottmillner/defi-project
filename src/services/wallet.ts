@@ -121,3 +121,19 @@ export function getBaseWallet(): ethers.Wallet {
   if (!pk) throw new Error("BASE_PRIVATE_KEY (or EVM_PRIVATE_KEY) env var is not set");
   return new ethers.Wallet(pk, baseProvider);
 }
+
+// ---------------------------------------------------------------------------
+// @solana/kit v2 aliases — used by kamino.ts
+// These wrap the existing singletons in the function-call pattern that
+// kamino.ts expects, keeping it decoupled from module-level state.
+// ---------------------------------------------------------------------------
+
+/** Returns the @solana/kit v2 KeyPairSigner (alias for getKaminoSigner). */
+export async function getSigner(): Promise<TransactionSigner> {
+  return getKaminoSigner();
+}
+
+/** Returns the @solana/kit v2 Rpc client (the module-level singleton). */
+export function getRpc(): Rpc<SolanaRpcApi> {
+  return rpc;
+}
