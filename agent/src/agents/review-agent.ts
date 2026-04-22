@@ -51,13 +51,27 @@ export async function runReviewAgent(prNumber: number): Promise<ReviewResult> {
   ];
 
   while (true) {
-    const response = await client.messages.create({
-      model: "claude-sonnet-4-6",
-      max_tokens: 4096,
-      system: systemPrompt,
-      tools: reviewToolDefinitions,
-      messages,
-    });
+    let response: Anthropic.Message;
+    while (true) {
+      try {
+        response = await client.messages.create({
+          model: "claude-sonnet-4-6",
+          max_tokens: 4096,
+          system: systemPrompt,
+          tools: reviewToolDefinitions,
+          messages,
+        });
+        break;
+      } catch (e: any) {
+        if (e?.status === 429) {
+          const retryAfter = parseInt(e?.headers?.["retry-after"] ?? "30");
+          console.log(`[review-agent] Rate limited — waiting ${retryAfter}s before retry`);
+          await new Promise((r) => setTimeout(r, retryAfter * 1000));
+          continue;
+        }
+        throw e;
+      }
+    }
 
     console.log(`[review-agent] stop_reason: ${response.stop_reason}`);
 

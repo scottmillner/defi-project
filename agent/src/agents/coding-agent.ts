@@ -47,13 +47,27 @@ After implementation:
 
   // Agentic loop — keep going until the model stops calling tools
   while (true) {
-    const response = await client.messages.create({
-      model: "claude-sonnet-4-6",
-      max_tokens: 8096,
-      system: systemPrompt,
-      tools: toolDefinitions,
-      messages,
-    });
+    let response: Anthropic.Message;
+    while (true) {
+      try {
+        response = await client.messages.create({
+          model: "claude-sonnet-4-6",
+          max_tokens: 8096,
+          system: systemPrompt,
+          tools: toolDefinitions,
+          messages,
+        });
+        break;
+      } catch (e: any) {
+        if (e?.status === 429) {
+          const retryAfter = parseInt(e?.headers?.["retry-after"] ?? "30");
+          console.log(`[coding-agent] Rate limited — waiting ${retryAfter}s before retry`);
+          await new Promise((r) => setTimeout(r, retryAfter * 1000));
+          continue;
+        }
+        throw e;
+      }
+    }
 
     console.log(`[coding-agent] stop_reason: ${response.stop_reason}`);
 
