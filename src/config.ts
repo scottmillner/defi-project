@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { addresses as mayanAddresses } from "@mayanfinance/swap-sdk";
 
 // Kamino
 export const KAMINO_MAIN_MARKET = "7u3HeHxYDLhnCoErrtycNokbQYbWGzLs6JSDqGAv5PfF";
@@ -10,6 +11,10 @@ export const USDC_MINT_SOLANA = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 
 // USDC on Base
 export const USDC_CONTRACT_BASE = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
+
+// Mayan forwarder contract on Base (EVM) — sourced from the Mayan SDK's addresses object.
+// This is the contract that must be approved to spend ERC-20 tokens before calling swapFromEvm.
+export const MAYAN_FORWARDER_CONTRACT_BASE: string = mayanAddresses.MAYAN_FORWARDER_CONTRACT;
 
 // RPC endpoints
 export const SOLANA_RPC_URL = process.env.SOLANA_RPC_URL ?? "https://api.mainnet-beta.solana.com";
