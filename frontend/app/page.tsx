@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
-import { useSolanaWallets } from "@privy-io/react-auth/solana";
+import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 
 type ActionResult = {
   error?: string;
