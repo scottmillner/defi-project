@@ -1,0 +1,27 @@
+{
+  "name": "defi-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "agent": "tsx src/agents/coding-agent.ts",
+    "webhook": "tsx src/webhook.ts",
+    "issues": "tsx src/agents/issue-agent.ts",
+    "review": "tsx src/agents/review-agent.ts",
+    "orchestrate": "tsx src/orchestrator.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@hono/node-server": "^1.19.11",
+    "@octokit/auth-app": "^8.2.0",
+    "@octokit/rest": "^22.0.1",
+    "dotenv": "^16.0.0",
+    "hono": "^4.12.8",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.7.3"
+  }
+}
