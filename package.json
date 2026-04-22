@@ -1,0 +1,26 @@
+{
+  "name": "defi-project",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "open": "tsx src/index.ts open",
+    "close": "tsx src/index.ts close"
+  },
+  "dependencies": {
+    "@kamino-finance/klend-sdk": "^7.3.22",
+    "@mayanfinance/swap-sdk": "^13.3.0",
+    "@solana/compat": "^2.3.0",
+    "@solana/kit": "^2.3.0",
+    "@solana/web3.js": "^1.95.0",
+    "bn.js": "^5.2.1",
+    "bs58": "^6.0.0",
+    "dotenv": "^16.0.0",
+    "ethers": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.7.3"
+  }
+}
