@@ -28,6 +28,7 @@ import { ethers } from "ethers";
 import {
   USDC_MINT_SOLANA,
   USDC_CONTRACT_BASE,
+  MAYAN_FORWARDER_CONTRACT_BASE,
   MAYAN_EXPLORER_API,
 } from "../config.js";
 
@@ -166,6 +167,10 @@ export async function bridgeToBase(amountUsdcUnits: number): Promise<BridgeResul
 /**
  * Bridge USDC from Base to Solana via Mayan.
  *
+ * Approves the Mayan forwarder contract to spend USDC before initiating the
+ * swap, as required for EVM → Solana ERC-20 bridges: without this approval
+ * the on-chain `transferFrom` inside the Mayan contract will revert.
+ *
  * @param amountUsdcUnits USDC amount in base units (6 decimals, e.g. 5_000_000 for $5).
  * @returns               Object containing the Base tx hash of the bridge initiation.
  */
@@ -182,6 +187,34 @@ export async function bridgeToSolana(amountUsdcUnits: number): Promise<BridgeRes
   console.log(`[Mayan] Base sender      : ${evmAddress}`);
   console.log(`[Mayan] Solana recipient : ${solanaAddress}`);
 
+  // ------------------------------------------------------------------
+  // Step 1: Approve the Mayan forwarder to spend USDC on our behalf.
+  //
+  // EVM → Solana swaps route tokens through the MayanForwarder contract,
+  // which calls `transferFrom` on the ERC-20.  Without a prior `approve`
+  // that call will revert with an allowance error.
+  // ------------------------------------------------------------------
+  console.log(
+    `[Mayan] Approving Mayan forwarder (${MAYAN_FORWARDER_CONTRACT_BASE}) ` +
+      `to spend ${amountUsdcUnits} USDC units…`
+  );
+
+  const usdcContract = new ethers.Contract(
+    USDC_CONTRACT_BASE,
+    ["function approve(address spender, uint256 amount) returns (bool)"],
+    baseWallet
+  );
+
+  const approveTx = await usdcContract.approve(
+    MAYAN_FORWARDER_CONTRACT_BASE,
+    BigInt(amountUsdcUnits)
+  );
+  await approveTx.wait();
+  console.log(`[Mayan] USDC approved for Mayan forwarder: ${approveTx.hash}`);
+
+  // ------------------------------------------------------------------
+  // Step 2: Fetch the best quote for Base → Solana.
+  // ------------------------------------------------------------------
   const quote = await fetchBestQuote(
     amountStr,
     USDC_CONTRACT_BASE,
@@ -190,6 +223,9 @@ export async function bridgeToSolana(amountUsdcUnits: number): Promise<BridgeRes
     "solana"
   );
 
+  // ------------------------------------------------------------------
+  // Step 3: Submit the bridge transaction.
+  // ------------------------------------------------------------------
   console.log("[Mayan] Submitting swapFromEvm…");
 
   // The Mayan SDK bundles a CJS copy of ethers; this project uses the ESM
