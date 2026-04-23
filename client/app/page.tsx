@@ -90,7 +90,7 @@ export default function Home() {
 
         <div className="space-y-3 mb-8">
           <p className="text-sm text-gray-400">
-            Collateral: 20 SOL | Borrow: 5 USDC | Bridge: Solana &rarr; Base
+            Collateral: $20 SOL | Borrow: $5 USDC | Bridge: Solana &rarr; Base
           </p>
           <div className="grid grid-cols-2 gap-4">
             <button

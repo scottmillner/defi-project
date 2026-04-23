@@ -44,7 +44,6 @@ import {
   KAMINO_LUT,
   SOL_MINT,
   USDC_MINT_SOLANA,
-  SOL_COLLATERAL_AMOUNT,
   USDC_BORROW_AMOUNT,
 } from "../config";
 
@@ -203,7 +202,7 @@ async function executeAction(
  * @returns Array of confirmed Solana transaction signatures.
  */
 export async function deposit(
-  amountSol: number = SOL_COLLATERAL_AMOUNT
+  amountSol: number
 ): Promise<string[]> {
   console.log(
     `\n[Kamino] ── DEPOSIT ${amountSol} SOL ──────────────────────────`
@@ -340,7 +339,7 @@ export async function repay(
  * @returns Array of confirmed Solana transaction signatures.
  */
 export async function withdraw(
-  amountSol: number = SOL_COLLATERAL_AMOUNT
+  amountSol: number
 ): Promise<string[]> {
   console.log(
     `\n[Kamino] ── WITHDRAW ${amountSol} SOL ─────────────────────────`

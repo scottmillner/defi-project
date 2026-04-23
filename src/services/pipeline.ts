@@ -16,8 +16,9 @@
  */
 
 import {
-  SOL_COLLATERAL_AMOUNT,
+  SOL_COLLATERAL_USD,
   USDC_BORROW_AMOUNT,
+  usdToSol,
 } from "../config";
 
 // Kamino service uses @solana/kit v2 types internally; we call it here with
@@ -89,13 +90,13 @@ function usdcToUnits(wholeUsdc: number): number {
 export async function openPosition(
   amounts: PositionAmounts = {}
 ): Promise<OpenPositionResult> {
-  const solAmount  = amounts.solAmount  ?? SOL_COLLATERAL_AMOUNT;
+  const solAmount  = amounts.solAmount  ?? await usdToSol(SOL_COLLATERAL_USD);
   const usdcAmount = amounts.usdcAmount ?? USDC_BORROW_AMOUNT;
   const usdcUnits  = usdcToUnits(usdcAmount);
 
   console.log("═══════════════════════════════════════════════════════════════");
   console.log("[pipeline] openPosition started");
-  console.log(`[pipeline]   SOL collateral : ${solAmount} SOL`);
+  console.log(`[pipeline]   SOL collateral : ${solAmount} SOL ($${SOL_COLLATERAL_USD})`);
   console.log(`[pipeline]   USDC borrow    : ${usdcAmount} USDC (${usdcUnits} base units)`);
   console.log("═══════════════════════════════════════════════════════════════");
 
@@ -149,14 +150,14 @@ export async function openPosition(
 export async function closePosition(
   amounts: PositionAmounts = {}
 ): Promise<ClosePositionResult> {
-  const solAmount  = amounts.solAmount  ?? SOL_COLLATERAL_AMOUNT;
+  const solAmount  = amounts.solAmount  ?? await usdToSol(SOL_COLLATERAL_USD);
   const usdcAmount = amounts.usdcAmount ?? USDC_BORROW_AMOUNT;
   const usdcUnits  = usdcToUnits(usdcAmount);
 
   console.log("═══════════════════════════════════════════════════════════════");
   console.log("[pipeline] closePosition started");
   console.log(`[pipeline]   USDC repay   : ${usdcAmount} USDC (${usdcUnits} base units)`);
-  console.log(`[pipeline]   SOL withdraw : ${solAmount} SOL`);
+  console.log(`[pipeline]   SOL withdraw : ${solAmount} SOL ($${SOL_COLLATERAL_USD})`);
   console.log("═══════════════════════════════════════════════════════════════");
 
   // ── Step 1: Bridge USDC from Base back to Solana ─────────────────────────
