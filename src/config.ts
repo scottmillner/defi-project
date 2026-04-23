@@ -24,20 +24,5 @@ export const BASE_RPC_URL = process.env.BASE_RPC_URL ?? "https://mainnet.base.or
 export const SOL_COLLATERAL_USD = 20;      // $20 worth of SOL
 export const USDC_BORROW_AMOUNT = 5;       // $5 USDC
 
-/**
- * Fetch the current SOL price from CoinGecko and convert a USD amount to SOL.
- */
-export async function usdToSol(usd: number): Promise<number> {
-  const res = await fetch(
-    "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd"
-  );
-  if (!res.ok) throw new Error(`CoinGecko request failed: ${res.status}`);
-  const data = (await res.json()) as { solana: { usd: number } };
-  const price = data.solana.usd;
-  const sol = usd / price;
-  console.log(`[config] SOL price: $${price} → $${usd} = ${sol.toFixed(6)} SOL`);
-  return parseFloat(sol.toFixed(6));
-}
-
 // Mayan bridge tracking
 export const MAYAN_EXPLORER_API = "https://explorer-api.mayan.finance/v3/swap/trx";

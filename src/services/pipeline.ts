@@ -18,15 +18,29 @@
 import {
   SOL_COLLATERAL_USD,
   USDC_BORROW_AMOUNT,
-  usdToSol,
 } from "../config";
 
-// Kamino service uses @solana/kit v2 types internally; we call it here with
-// human-readable amounts and let the service convert to base units.
 import { deposit, borrow, repay, withdraw } from "./kamino";
-
-// Mayan service uses @solana/web3.js v1 types internally.
 import { bridgeToBase, bridgeToSolana, waitForBridge } from "./mayan";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Fetch the current SOL price from CoinGecko and convert a USD amount to SOL.
+ */
+async function usdToSol(usd: number): Promise<number> {
+  const res = await fetch(
+    "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd"
+  );
+  if (!res.ok) throw new Error(`CoinGecko request failed: ${res.status}`);
+  const data = (await res.json()) as { solana: { usd: number } };
+  const price = data.solana.usd;
+  const sol = usd / price;
+  console.log(`[pipeline] SOL price: $${price} → $${usd} = ${sol.toFixed(6)} SOL`);
+  return parseFloat(sol.toFixed(6));
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
